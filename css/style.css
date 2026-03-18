@@ -24,7 +24,7 @@ h1, h2, h3 {
   letter-spacing: 1px;
 }
 
-/* ── Sticky wrapper — overflow:visible lets logo hang below ── */
+/* ── Sticky wrapper ── */
 #header {
   position: sticky;
   top: 0;
@@ -41,48 +41,47 @@ header {
 nav {
   max-width: 1200px;
   margin: auto;
-  /* extra bottom padding creates the "shelf" the logo hangs off */
-  padding: 12px 20px 28px;
+  padding: 15px 20px;       /* JS will drive this inline — this is the starting value */
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  transition: padding 0.35s ease;
+  /* No transition here — JS uses will-change + rAF for stutter-free animation */
 }
 
-/* ── Logo — hangs 22px below the header border ── */
+/* ── Logo wrapper: fixed size, overflow:visible so logo hangs below ──
+   will-change promotes to compositor layer → no layout jank              */
 .logo-link {
   display: inline-flex;
   align-items: center;
+  text-decoration: none;
+}
+
+.logo-wrapper {
   position: relative;
-  z-index: 101;
+  overflow: visible;
+  will-change: width, height;    /* compositor layer — same trick as reference site */
+  transition: width 0.35s ease, height 0.35s ease;
+  /* sized to match the natural logo dimensions */
+  width: 160px;
+  height: 60px;
 }
 
+/* Logo image is absolutely positioned inside the wrapper.
+   It NEVER changes size — the wrapper shrinks around it.
+   translateY pushes it below the header border (overhang).  */
 .logo {
-  height: 68px;
-  width: auto;
-  max-width: 100%;
-  transform: translateY(22px);
-  transition: height 0.35s ease, transform 0.35s ease;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 160px;          /* fixed — does not change on scroll */
+  height: auto;
+  transform: translateY(18px);
+  will-change: transform;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.2));
 }
 
-/* ── Scrolled state — shrinks to roughly half ── */
-#header.scrolled nav {
-  padding: 8px 20px 16px;
-}
-
-#header.scrolled .logo {
-  height: 34px;
-  transform: translateY(12px);
-}
-
-#header.scrolled .phone {
-  padding: 7px 14px;
-  font-size: 0.85rem;
-}
-
-/* ── Nav links ── */
+/* ── Nav ── */
 .nav-links {
   display: flex;
   gap: 30px;
@@ -108,7 +107,6 @@ nav {
   border-radius: 6px;
   font-weight: bold;
   text-decoration: none;
-  transition: padding 0.35s ease, font-size 0.35s ease;
 }
 
 /* ── Hero ── */
