@@ -2,6 +2,7 @@
   --accent: #000;
   --dark: #e9e9e9;
   --card: #1a1a1a;
+  --hover: #363636
 }
 
 * {
@@ -60,7 +61,7 @@ nav {
 
 .nav-links a:hover,
 .nav-links a.active {
-  color: var(--accent);
+  color: var(--hover);
   border-bottom: 3px solid var(--accent);
 }
 
