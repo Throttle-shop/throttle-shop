@@ -28,6 +28,16 @@ async function loadComponents() {
   if (window.innerWidth <= 768) {
     document.querySelectorAll('.menu-toggle').forEach(el => el.style.display = 'block');
   }
+
+  // ── Shrink header on scroll ──
+  const headerWrapper = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 10) {
+      headerWrapper.classList.add('scrolled');
+    } else {
+      headerWrapper.classList.remove('scrolled');
+    }
+  }, { passive: true });
 }
 
 window.onload = loadComponents;
